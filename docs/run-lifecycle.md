@@ -1,4 +1,4 @@
-#Lifecycle
+# Lifecycle
 
 Marquez captures the runs of a job, and changes as they happen.
 
@@ -27,8 +27,8 @@ When the job lineage can be inspected from it's static definition the metadata i
  We start the run
 
 ### When the run of the job ends
- - PUT /namespaces/{namespace}/datasets/{name} (for every dataset the job wrote to)
-  We update the definition of each dataset this job wrote to. For example the schema might have changed
+ - PUT /namespaces/{namespace}/datasets/{name} (for every dataset the job wrote to during that run)
+  We update the definition of each dataset this job wrote to during the run. The dataset updates *must* refer to the runId. For example the schema might have changed
 - POST /namespaces/{namespace}/jobs/{name}/runs/{id}/complete
  We mark the run as succeful (similarly 'fail' for a failed job)
 
