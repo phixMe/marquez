@@ -35,6 +35,7 @@ import marquez.common.models.DatasetName;
 import marquez.common.models.DatasetVersionId;
 import marquez.common.models.Field;
 import marquez.common.models.FieldName;
+import marquez.common.models.JobName;
 import marquez.common.models.NamespaceName;
 import marquez.common.models.TagName;
 import marquez.db.DatasetDao;
@@ -47,6 +48,7 @@ import marquez.db.models.DatasetFieldRow;
 import marquez.db.models.DatasetRow;
 import marquez.db.models.DatasetVersionRow;
 import marquez.db.models.ExtendedDatasetRow;
+import marquez.db.models.LineageDatasetRow;
 import marquez.db.models.NamespaceRow;
 import marquez.db.models.SourceRow;
 import marquez.db.models.TagRow;
@@ -241,6 +243,10 @@ public class DatasetService {
       log.error("Failed to get dataset '{}'.", datasetName.getValue(), e);
       throw new MarquezServiceException();
     }
+  }
+
+  public List<LineageDatasetRow> getLinks(@NonNull NamespaceName namespaceName, @NonNull JobName jobName) {
+    return this.datasetDao.findLinks(namespaceName.getValue(), jobName.getValue());
   }
 
   public Optional<Dataset> getBy(@NonNull DatasetVersionId datasetVersionId)

@@ -34,6 +34,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import marquez.common.Utils;
 import marquez.common.models.DatasetId;
+import marquez.common.models.DatasetName;
 import marquez.common.models.JobName;
 import marquez.common.models.JobVersionId;
 import marquez.common.models.NamespaceName;
@@ -44,6 +45,7 @@ import marquez.db.JobVersionDao;
 import marquez.db.NamespaceDao;
 import marquez.db.RunDao;
 import marquez.db.models.DatasetRow;
+import marquez.db.models.ExtendedDatasetRow;
 import marquez.db.models.ExtendedJobVersionRow;
 import marquez.db.models.ExtendedRunRow;
 import marquez.db.models.JobContextRow;
@@ -268,6 +270,10 @@ public class JobService {
     return jobDao
         .find(jobVersionId.getNamespace().getValue(), jobVersionId.getName().getValue())
         .map(jobRow -> toJob(jobRow, jobVersionId.getVersionUuid()));
+  }
+
+  public List<JobRow> getLinks(@NonNull NamespaceName namespaceName, @NonNull DatasetName datasetName) {
+    return this.jobDao.findLinks(namespaceName.getValue(), datasetName.getValue());
   }
 
   public ImmutableList<Job> getAll(@NonNull NamespaceName namespaceName, int limit, int offset)

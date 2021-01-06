@@ -23,8 +23,10 @@ import java.util.Optional;
 import java.util.UUID;
 import marquez.db.mappers.DatasetRowMapper;
 import marquez.db.mappers.ExtendedDatasetRowMapper;
+import marquez.db.mappers.LineageDatasetRowMapper;
 import marquez.db.models.DatasetRow;
 import marquez.db.models.ExtendedDatasetRow;
+import marquez.db.models.LineageDatasetRow;
 import org.jdbi.v3.sqlobject.SqlObject;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.BindList;
@@ -146,6 +148,23 @@ public interface DatasetDao extends SqlObject {
           + "LIMIT :limit OFFSET :offset")
   @RegisterRowMapper(ExtendedDatasetRowMapper.class)
   List<ExtendedDatasetRow> findAll(String namespaceName, int limit, int offset);
+
+  @SqlQuery(
+      "SELECT datasets.*, dio.namespace_name, dio.source_name, dio.io_type "
+          + "FROM datasets "
+          + "         INNER JOIN (SELECT dv.dataset_uuid, io_type, n.name as namespace_name, s.name AS source_name "
+          + "                     FROM datasets "
+          + "                              INNER JOIN namespaces n on datasets.namespace_uuid = n.uuid"
+          + "                              INNER JOIN dataset_versions dv ON datasets.uuid = dv.dataset_uuid "
+          + "                              INNER JOIN job_versions_io_mapping jvim ON datasets.uuid = jvim.dataset_uuid "
+          + "                              INNER JOIN job_versions jv ON jvim.job_version_uuid = jv.uuid "
+          + "                              INNER JOIN jobs j ON jv.job_uuid = j.uuid "
+          + "                              INNER JOIN sources AS s ON (s.uuid = d.source_uuid) "
+          + "                              WHERE j.name = :jobName AND n.name = :namespaceName "
+          + ") AS dio ON uuid = dio.dataset_uuid "
+          + "ORDER BY datasets.name;")
+  @RegisterRowMapper(LineageDatasetRowMapper.class)
+  List<LineageDatasetRow> findLinks(String namespaceName, String jobName);
 
   @SqlQuery("SELECT COUNT(*) FROM datasets")
   int count();

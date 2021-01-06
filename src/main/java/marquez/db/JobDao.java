@@ -86,6 +86,20 @@ public interface JobDao {
           + "LIMIT :limit OFFSET :offset")
   List<JobRow> findAll(String namespaceName, int limit, int offset);
 
+  @SqlQuery(
+      "SELECT * " +
+              "FROM jobs " +
+              "         INNER JOIN (SELECT job_uuid, io_type " +
+              "                     FROM jobs " +
+              "                              INNER JOIN namespaces n ON jobs.namespace_uuid = n.uuid " +
+              "                              INNER JOIN job_versions jv ON jobs.current_version_uuid = jv.uuid " +
+              "                              INNER JOIN job_versions_io_mapping jvim ON jv.uuid = jvim.job_version_uuid " +
+              "                              INNER JOIN datasets d ON jvim.dataset_uuid = d.uuid " +
+              "                     where d.name :datasetName AND n.name = :namespaceName) as duit " +
+              "                    ON jobs.uuid = job_uuid " +
+              "ORDER BY jobs.name;")
+  List<JobRow> findLinks(String namespaceName, String datasetName);
+
   @SqlQuery("SELECT COUNT(*) FROM jobs")
   int count();
 }
