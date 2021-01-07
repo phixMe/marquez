@@ -18,25 +18,24 @@ import marquez.db.models.NodeData;
 
 @Value
 public class DatasetData implements NodeData {
-    @NonNull DatasetId id;
-    @NonNull DatasetType type;
-    @NonNull DatasetName name;
-    @NonNull DatasetName physicalName;
-    @NonNull Instant createdAt;
-    @NonNull Instant updatedAt;
-    @NonNull NamespaceName namespace;
-    @NonNull SourceName sourceName;
-    @NonNull ImmutableList<Field> fields;
-    @NonNull ImmutableSet<TagName> tags;
-    @Nullable Instant lastModifiedAt;
-    @Nullable String description;
+  @NonNull DatasetId id;
+  @NonNull DatasetType type;
+  @NonNull DatasetName name;
+  @NonNull DatasetName physicalName;
+  @NonNull Instant createdAt;
+  @NonNull Instant updatedAt;
+  @NonNull NamespaceName namespace;
+  @NonNull SourceName sourceName;
+  @NonNull ImmutableList<Field> fields;
+  @NonNull ImmutableSet<TagName> tags;
+  @Nullable Instant lastModifiedAt;
+  @Nullable String description;
 
-    public Optional<Instant> getLastModifiedAt() {
-        return Optional.ofNullable(lastModifiedAt);
-    }
+  public Optional<Instant> getLastModifiedAt() {
+    return Optional.ofNullable(lastModifiedAt);
+  }
 
-    public Optional<String> getDescription() {
-        return Optional.ofNullable(description);
-    }
+  public Optional<String> getDescription() {
+    return Optional.ofNullable(description);
+  }
 }
-

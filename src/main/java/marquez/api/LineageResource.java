@@ -5,10 +5,8 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.ResponseMetered;
 import com.codahale.metrics.annotation.Timed;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -24,6 +22,7 @@ import marquez.common.models.DatasetId;
 import marquez.common.models.JobId;
 import marquez.db.models.LineageDatasetRow;
 import marquez.db.models.ResultData;
+import marquez.service.DatasetData;
 import marquez.service.DatasetService;
 import marquez.service.JobData;
 import marquez.service.JobService;
@@ -58,17 +57,45 @@ public class LineageResource {
     if (nodeId.isJobType()) {
       JobId jobId = nodeId.asJobId();
       Job job = this.jobService.get(jobId.getNamespace(), jobId.getName()).get();
-      lineageResults.add(new ResultData(nodeId, new JobData(jobId, job.getType(), job.getName(), job.getCreatedAt(), job.getUpdatedAt(), job.getNamespace(), job.getInputs(), job.getOutputs(), job.getLocation().get(), job.getContext(), job.getDescription().get(), job.getLatestRun().get())));
-      List<LineageDatasetRow> lineageDatasetRow = this.datasetService.getLinks(jobId.getNamespace(), jobId.getName());
+      lineageResults.add(
+          new ResultData(
+              nodeId,
+              new JobData(
+                  jobId,
+                  job.getType(),
+                  job.getName(),
+                  job.getCreatedAt(),
+                  job.getUpdatedAt(),
+                  job.getNamespace(),
+                  job.getInputs(),
+                  job.getOutputs(),
+                  job.getLocation().get(),
+                  job.getContext(),
+                  job.getDescription().get(),
+                  job.getLatestRun().get())));
+      List<LineageDatasetRow> lineageDatasetRow =
+          this.datasetService.getLinks(jobId.getNamespace(), jobId.getName());
     } else if (nodeId.isDatasetType()) {
       DatasetId datasetId = nodeId.asDatasetId();
-      Optional<Dataset> dataset =
-          this.datasetService.get(datasetId.getNamespace(), datasetId.getName());
+      Dataset dataset =
+          this.datasetService.get(datasetId.getNamespace(), datasetId.getName()).get();
+      lineageResults.add(
+          new ResultData(
+              nodeId,
+              new DatasetData(
+                  dataset.getId(),
+                  dataset.getType(),
+                  dataset.getName(),
+                  dataset.getPhysicalName(),
+                  dataset.getCreatedAt(),
+                  dataset.getUpdatedAt(),
+                  dataset.getNamespace(),
+                  dataset.getSourceName(),
+                  dataset.getFields(),
+                  dataset.getTags(),
+                  dataset.getLastModifiedAt().get(),
+                  dataset.getDescription().get())));
     }
-
-
-
-
 
     return Response.ok().build();
   }

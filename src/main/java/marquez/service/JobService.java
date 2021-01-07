@@ -45,7 +45,6 @@ import marquez.db.JobVersionDao;
 import marquez.db.NamespaceDao;
 import marquez.db.RunDao;
 import marquez.db.models.DatasetRow;
-import marquez.db.models.ExtendedDatasetRow;
 import marquez.db.models.ExtendedJobVersionRow;
 import marquez.db.models.ExtendedRunRow;
 import marquez.db.models.JobContextRow;
@@ -272,7 +271,8 @@ public class JobService {
         .map(jobRow -> toJob(jobRow, jobVersionId.getVersionUuid()));
   }
 
-  public List<JobRow> getLinks(@NonNull NamespaceName namespaceName, @NonNull DatasetName datasetName) {
+  public List<JobRow> getLinks(
+      @NonNull NamespaceName namespaceName, @NonNull DatasetName datasetName) {
     return this.jobDao.findLinks(namespaceName.getValue(), datasetName.getValue());
   }
 

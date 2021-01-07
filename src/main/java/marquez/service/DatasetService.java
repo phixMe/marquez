@@ -245,7 +245,8 @@ public class DatasetService {
     }
   }
 
-  public List<LineageDatasetRow> getLinks(@NonNull NamespaceName namespaceName, @NonNull JobName jobName) {
+  public List<LineageDatasetRow> getLinks(
+      @NonNull NamespaceName namespaceName, @NonNull JobName jobName) {
     return this.datasetDao.findLinks(namespaceName.getValue(), jobName.getValue());
   }
 

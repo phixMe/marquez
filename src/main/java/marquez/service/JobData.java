@@ -18,29 +18,28 @@ import marquez.service.models.Run;
 
 @Value
 public class JobData implements NodeData {
-    @NonNull JobId id;
-    @NonNull JobType type;
-    @NonNull JobName name;
-    @NonNull Instant createdAt;
-    @NonNull Instant updatedAt;
-    @NonNull NamespaceName namespace;
-    @NonNull ImmutableSet<DatasetId> inputs;
-    @NonNull ImmutableSet<DatasetId> outputs;
-    @Nullable URL location;
-    @NonNull ImmutableMap<String, String> context;
-    @Nullable String description;
-    @Nullable Run latestRun;
+  @NonNull JobId id;
+  @NonNull JobType type;
+  @NonNull JobName name;
+  @NonNull Instant createdAt;
+  @NonNull Instant updatedAt;
+  @NonNull NamespaceName namespace;
+  @NonNull ImmutableSet<DatasetId> inputs;
+  @NonNull ImmutableSet<DatasetId> outputs;
+  @Nullable URL location;
+  @NonNull ImmutableMap<String, String> context;
+  @Nullable String description;
+  @Nullable Run latestRun;
 
-    public Optional<URL> getLocation() {
-        return Optional.ofNullable(location);
-    }
+  public Optional<URL> getLocation() {
+    return Optional.ofNullable(location);
+  }
 
-    public Optional<String> getDescription() {
-        return Optional.ofNullable(description);
-    }
+  public Optional<String> getDescription() {
+    return Optional.ofNullable(description);
+  }
 
-    public Optional<Run> getLatestRun() {
-        return Optional.ofNullable(latestRun);
-    }
+  public Optional<Run> getLatestRun() {
+    return Optional.ofNullable(latestRun);
+  }
 }
-
