@@ -3,7 +3,6 @@ package marquez.service.models;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Joiner;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import marquez.common.models.DatasetId;
@@ -14,12 +13,11 @@ import marquez.common.models.NamespaceName;
 
 public class NodeId {
   public static final String ID_DELIM = ":";
-  public static final Joiner ID_JOINER = Joiner.on(ID_DELIM);
 
   private static final String ID_PREFX_DATASET = "dataset";
   private static final String ID_PREFX_JOB = "job";
   private static final Pattern ID_PATTERN =
-      Pattern.compile(String.format("^(%s|%s|%s):.*$", ID_PREFX_DATASET, ID_PREFX_JOB));
+      Pattern.compile(String.format("^(%s|%s):.*$", ID_PREFX_DATASET, ID_PREFX_JOB));
 
   @Getter private final String value;
 

@@ -19,13 +19,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import marquez.db.mappers.JobRowMapper;
+import marquez.db.mappers.LineageJobRowMapper;
 import marquez.db.models.JobRow;
+import marquez.db.models.LineageJobRow;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 @RegisterRowMapper(JobRowMapper.class)
+@RegisterRowMapper(LineageJobRowMapper.class)
 public interface JobDao {
   @SqlUpdate(
       "INSERT INTO jobs ("
@@ -98,7 +101,7 @@ public interface JobDao {
           + "                     where d.name :datasetName AND n.name = :namespaceName) as duit "
           + "                    ON jobs.uuid = job_uuid "
           + "ORDER BY jobs.name;")
-  List<JobRow> findLinks(String namespaceName, String datasetName);
+  List<LineageJobRow> findLinks(String namespaceName, String datasetName);
 
   @SqlQuery("SELECT COUNT(*) FROM jobs")
   int count();

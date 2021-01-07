@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import marquez.api.DatasetResource;
 import marquez.api.JobResource;
+import marquez.api.LineageResource;
 import marquez.api.NamespaceResource;
 import marquez.api.SourceResource;
 import marquez.api.TagResource;
@@ -69,6 +70,7 @@ public final class MarquezContext {
   @Getter private final DatasetResource datasetResource;
   @Getter private final JobResource jobResource;
   @Getter private final TagResource tagResource;
+  @Getter private final LineageResource lineageResource;
 
   @Getter private final ImmutableList<Object> resources;
   @Getter private final JdbiExceptionExceptionMapper jdbiException;
@@ -125,6 +127,7 @@ public final class MarquezContext {
         new DatasetResource(namespaceService, datasetService, tagService, runService);
     this.jobResource = new JobResource(namespaceService, jobService, runService);
     this.tagResource = new TagResource(tagService);
+    this.lineageResource = new LineageResource(datasetService, jobService);
 
     this.resources =
         ImmutableList.of(
@@ -133,6 +136,7 @@ public final class MarquezContext {
             datasetResource,
             jobResource,
             tagResource,
+            lineageResource,
             serviceExceptionMapper,
             jdbiException);
   }
